@@ -39,7 +39,7 @@ export default function ThanksScreen() {
       >
         <View className="mb-8 w-full items-center">
           <LinearGradient
-            colors={['#8EB8BC', '#5E969E']}
+            colors={[hospitalConfig.accentColor, hospitalConfig.primaryColor]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             className="w-full h-[180px] items-center justify-center sm:h-[220px]"
