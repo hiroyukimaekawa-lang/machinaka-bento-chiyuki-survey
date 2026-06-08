@@ -6,15 +6,9 @@ import questionsData from '../questions/surveyQuestions.json';
 const INITIAL_STATE: SurveyFormState = {
   usageScene: '',
   orderMethod: '',
-  deliveryTime: '',
-  deliveryStaff: '',
-  deliveryCondition: '',
-  bentoAppearance: '',
-  bentoTaste: '',
-  bentoRice: '',
-  bentoVolume: '',
-  bentoWarmth: '', // 任意 / 該当なし可
-  recommendation: '',
+  taste: '',
+  costPerformance: '',
+  volume: '',
   comments: '',
 };
 

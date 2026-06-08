@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Header } from '../components/Header';
 import { HeroBanner } from '../components/HeroBanner';
-import { RadioGroup } from '../components/RadioGroup';
+import { Select } from '../components/Select';
 import { TextArea } from '../components/TextArea';
 import { StarRating } from '../components/StarRating';
 import { SubmitButton } from '../components/SubmitButton';
@@ -87,9 +87,9 @@ export default function SurveyScreen() {
           </Text>
         ) : null}
 
-        {/* ラジオボタン */}
-        {question.type === 'radio' && (
-          <RadioGroup
+        {/* プルダウン（セレクト） */}
+        {question.type === 'select' && (
+          <Select
             options={question.options}
             value={value as string}
             onChange={(val) => updateField(question.id as keyof SurveyFormState, val)}

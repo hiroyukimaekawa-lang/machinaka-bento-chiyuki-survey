@@ -1,7 +1,7 @@
 [
   {
     "id": "usageScene",
-    "type": "radio",
+    "type": "select",
     "title": "①ご利用シーン",
     "options": [
       "接待・会議・ビジネス",
@@ -14,7 +14,7 @@
   },
   {
     "id": "orderMethod",
-    "type": "radio",
+    "type": "select",
     "title": "②ご注文方法",
     "options": [
       "WEBサイトから",
@@ -23,79 +23,37 @@
     "required": true
   },
   {
-    "id": "deliverySectionTitle",
-    "type": "section_title",
-    "title": "デリバリー（配達）品質の評価"
-  },
-  {
-    "id": "deliveryTime",
-    "type": "star",
-    "title": "③お届け時間（指定通りに届いたか）",
-    "required": true
-  },
-  {
-    "id": "deliveryStaff",
-    "type": "star",
-    "title": "④配達員の接客態度・身だしなみ",
-    "required": true
-  },
-  {
-    "id": "deliveryCondition",
-    "type": "star",
-    "title": "⑤お弁当のお届け状態（中身の崩れや偏りがなかったか）",
-    "required": true
-  },
-  {
     "id": "bentoSectionTitle",
     "type": "section_title",
-    "title": "お弁当（商品）品質の評価"
+    "title": "お弁当の評価"
   },
   {
-    "id": "bentoAppearance",
+    "id": "taste",
     "type": "star",
-    "title": "⑥お弁当の見栄え・高級感",
+    "title": "③味の満足度",
     "required": true
   },
   {
-    "id": "bentoTaste",
+    "id": "costPerformance",
     "type": "star",
-    "title": "⑦お弁当の味・クオリティ",
+    "title": "④コスパ",
     "required": true
   },
   {
-    "id": "bentoRice",
+    "id": "volume",
     "type": "star",
-    "title": "⑧ご飯の種類（炊き込みご飯・赤飯・釜飯など）の満足度",
+    "title": "⑤量",
     "required": true
-  },
-  {
-    "id": "bentoVolume",
-    "type": "star",
-    "title": "⑨お弁当のボリューム（量）",
-    "required": true
-  },
-  {
-    "id": "bentoWarmth",
-    "type": "star_optional",
-    "title": "⑩茶碗蒸しや鉄板セットなどの温かさ・保温状態",
-    "subtitle": "※ご注文いただいていない場合は「該当なし」を選択してください",
-    "required": false
   },
   {
     "id": "overallSectionTitle",
     "type": "section_title",
-    "title": "総評・ご意見"
-  },
-  {
-    "id": "recommendation",
-    "type": "star",
-    "title": "⑪今後の利用意向・推奨度",
-    "required": true
+    "title": "ご意見・ご感想"
   },
   {
     "id": "comments",
     "type": "textarea",
-    "title": "⑫ご意見・ご感想（自由記述）",
+    "title": "⑥お気づきの点などご自由にお書きください",
     "required": false
   }
 ]
