@@ -6,8 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Header } from '../components/Header';
 import { HeroBanner } from '../components/HeroBanner';
-import { Select } from '../components/Select';
-import { TextArea } from '../components/TextArea';
 import { StarRating } from '../components/StarRating';
 import { SubmitButton } from '../components/SubmitButton';
 import { FormError } from '../components/FormError';
@@ -16,27 +14,9 @@ import { useSurveyForm } from '../hooks/useSurveyForm';
 import questionsData from '../questions/surveyQuestions.json';
 import { SurveyFormState } from '../types/survey';
 
-// 「該当なし」の特殊値
-const NA_VALUE = -1;
-
 function RequiredBadge() {
   return (
     <Text className="ml-1 text-sm font-bold text-[#D34141]">※必須</Text>
-  );
-}
-
-/** セクションタイトル */
-function SectionTitle({ title }: { title: string }) {
-  return (
-    <View className="mb-4 mt-8 w-full">
-      <View className="flex-row items-center mb-2">
-        <View className="h-5 w-1 rounded-full mr-2" style={{ backgroundColor: '#C8622A' }} />
-        <Text className="font-noto text-base font-bold" style={{ color: '#C8622A' }}>
-          {title}
-        </Text>
-      </View>
-      <View className="h-[1px] w-full" style={{ backgroundColor: '#F0DECE' }} />
-    </View>
   );
 }
 
@@ -57,16 +37,11 @@ export default function SurveyScreen() {
 
     router.replace({
       pathname: '/thanks',
-      params: { comments: form.comments },
+      params: { taste: form.taste }, // 評価を渡す
     });
   };
 
   const renderQuestion = (question: any) => {
-    // セクションタイトル
-    if (question.type === 'section_title') {
-      return <SectionTitle key={question.id} title={question.title} />;
-    }
-
     const error = errors[question.id as keyof SurveyFormState];
     const value = form[question.id as keyof SurveyFormState];
 
@@ -87,16 +62,6 @@ export default function SurveyScreen() {
           </Text>
         ) : null}
 
-        {/* プルダウン（セレクト） */}
-        {question.type === 'select' && (
-          <Select
-            options={question.options}
-            value={value as string}
-            onChange={(val) => updateField(question.id as keyof SurveyFormState, val)}
-            hasError={!!error}
-          />
-        )}
-
         {/* 5段階スター評価（必須） */}
         {question.type === 'star' && (
           <StarRating
@@ -106,28 +71,6 @@ export default function SurveyScreen() {
             }
             hasError={!!error}
             allowNA={false}
-          />
-        )}
-
-        {/* 5段階スター評価（「該当なし」あり・任意） */}
-        {question.type === 'star_optional' && (
-          <StarRating
-            value={value ? Number(value) : null}
-            onChange={(val) =>
-              updateField(question.id as keyof SurveyFormState, val !== null ? String(val) : '')
-            }
-            hasError={!!error}
-            allowNA={true}
-          />
-        )}
-
-        {/* テキストエリア */}
-        {question.type === 'textarea' && (
-          <TextArea
-            value={value as string}
-            onChangeText={(text) => updateField(question.id as keyof SurveyFormState, text)}
-            placeholder="注文したお弁当名や、お気づきの点（お褒めの言葉・改善点）をご自由にお書きください"
-            hasError={!!error}
           />
         )}
 

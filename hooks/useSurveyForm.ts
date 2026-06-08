@@ -4,12 +4,7 @@ import type { SurveyAnswer, SurveyFormErrors, SurveyFormState } from '../types/s
 import questionsData from '../questions/surveyQuestions.json';
 
 const INITIAL_STATE: SurveyFormState = {
-  usageScene: '',
-  orderMethod: '',
   taste: '',
-  costPerformance: '',
-  volume: '',
-  comments: '',
 };
 
 export function useSurveyForm() {

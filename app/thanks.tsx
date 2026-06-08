@@ -19,13 +19,12 @@ import { hospitalConfig } from '../constants/hospitalConfig';
 
 export default function ThanksScreen() {
   const params = useLocalSearchParams();
-  const rawComments = typeof params.comments === 'string' ? params.comments.trim() : '';
+  const tasteScore = Number(params.taste) || 0;
+  // 星3以下の場合はGoogleへ誘導しない
+  const isLowScore = tasteScore > 0 && tasteScore <= 3;
 
-  // 設問のコメントが空なら、プレースホルダーと同じ定型文を使用
   const defaultText = "注文したお弁当名や、お気づきの点（お褒めの言葉・改善点）をご自由にお書きください";
-  const [reviewDraft, setReviewDraft] = useState(
-    rawComments.length > 0 ? rawComments : defaultText
-  );
+  const [reviewDraft, setReviewDraft] = useState(defaultText);
   const [copied, setCopied] = useState(false);
 
   const handleCopyToClipboard = async () => {
@@ -91,135 +90,140 @@ export default function ThanksScreen() {
             </Text>
           </View>
 
-          {/* 区切り線 */}
-          <View className="mb-8 flex-row items-center justify-center">
-            <View className="h-[1px] flex-1" style={{ backgroundColor: '#F0DECE' }} />
-            <Ionicons name="restaurant-outline" size={20} color="#C8622A" style={{ marginHorizontal: 16 }} />
-            <View className="h-[1px] flex-1" style={{ backgroundColor: '#F0DECE' }} />
-          </View>
+          {/* Google誘導とコピペUI（星4以上のみ表示） */}
+          {!isLowScore && (
+            <>
+              {/* 区切り線 */}
+              <View className="mb-8 flex-row items-center justify-center">
+                <View className="h-[1px] flex-1" style={{ backgroundColor: '#F0DECE' }} />
+                <Ionicons name="restaurant-outline" size={20} color="#C8622A" style={{ marginHorizontal: 16 }} />
+                <View className="h-[1px] flex-1" style={{ backgroundColor: '#F0DECE' }} />
+              </View>
 
-          {/* クチコミ投稿セクション */}
-          <View className="mb-6">
-            <Text className="text-center font-noto text-xl font-bold mb-2" style={{ color: '#2D1A0E' }}>
-              Googleクチコミにご協力ください 🙏
-            </Text>
-            <Text className="font-noto text-sm leading-relaxed mb-6 text-center" style={{ color: '#7A5C45' }}>
-              お客様の声が、他のお客様の参考になります。よろしければ、Googleクチコミへの投稿をお願いいたします。
-            </Text>
-          </View>
+              {/* クチコミ投稿セクション */}
+              <View className="mb-6">
+                <Text className="text-center font-noto text-xl font-bold mb-2" style={{ color: '#2D1A0E' }}>
+                  Googleクチコミにご協力ください 🙏
+                </Text>
+                <Text className="font-noto text-sm leading-relaxed mb-6 text-center" style={{ color: '#7A5C45' }}>
+                  お客様の声が、他のお客様の参考になります。よろしければ、Googleクチコミへの投稿をお願いいたします。
+                </Text>
+              </View>
 
-          {/* コピペ支援UI */}
-          <View
-            className="mb-6 rounded-2xl overflow-hidden"
-            style={{
-              shadowColor: '#000',
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.08,
-              shadowRadius: 12,
-              elevation: 3,
-            }}
-          >
-            {/* ヘッダー部分 */}
-            <View
-              style={{ backgroundColor: '#C8622A' }}
-              className="px-4 py-3 flex-row items-center"
-            >
-              <Ionicons name="clipboard-outline" size={16} color="white" />
-              <Text className="font-noto text-sm font-bold text-white ml-2 flex-1">
-                👇 以下の文章をコピーしてクチコミに貼り付けられます
-              </Text>
-            </View>
-
-            {/* テキスト編集エリア */}
-            <View className="bg-white p-4">
-              <TextArea
-                value={reviewDraft}
-                onChangeText={setReviewDraft}
-                className="bg-white border-gray-200"
-              />
-            </View>
-
-            {/* コピーボタン */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={handleCopyToClipboard}
-              style={{ backgroundColor: copied ? '#10b981' : '#FDF4EE' }}
-              className="px-4 py-4 flex-row items-center justify-center border-t border-gray-100"
-            >
-              <Ionicons
-                name={copied ? 'checkmark-circle' : 'copy-outline'}
-                size={20}
-                color={copied ? 'white' : '#C8622A'}
-              />
-              <Text
-                className="font-noto text-base font-bold ml-2"
-                style={{ color: copied ? 'white' : '#C8622A' }}
-              >
-                {copied ? '✅ コピー完了！' : '📋 投稿文をコピーする'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Googleマップ クチコミボタン */}
-          <View
-            className="items-center mt-2 mb-4"
-            style={{
-              backgroundColor: 'transparent',
-              borderWidth: 0,
-              padding: 0,
-              marginHorizontal: 0,
-            }}
-          >
-            <TouchableOpacity
-              activeOpacity={0.85}
-              onPress={handleOpenGoogleMaps}
-              className="outline-none border-0"
-              style={{
-                width: '100%',
-                maxWidth: 400,
-                backgroundColor: 'transparent',
-                borderWidth: 0,
-                shadowColor: '#C8622A',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.3,
-                shadowRadius: 12,
-                elevation: 6,
-                // @ts-ignore
-                outlineStyle: 'none',
-                // @ts-ignore
-                outlineWidth: 0,
-              }}
-            >
-              <LinearGradient
-                colors={['#E8943A', '#C8622A']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
+              {/* コピペ支援UI */}
+              <View
+                className="mb-6 rounded-2xl overflow-hidden"
                 style={{
-                  borderRadius: 50,
-                  paddingVertical: 18,
-                  paddingHorizontal: 24,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.08,
+                  shadowRadius: 12,
+                  elevation: 3,
                 }}
               >
-                <Ionicons name="map-outline" size={22} color="white" style={{ marginRight: 10 }} />
-                <Text className="font-noto text-base font-bold text-white tracking-wider">
-                  🗺️ Googleマップを開いてクチコミを書く
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
+                {/* ヘッダー部分 */}
+                <View
+                  style={{ backgroundColor: '#C8622A' }}
+                  className="px-4 py-3 flex-row items-center"
+                >
+                  <Ionicons name="clipboard-outline" size={16} color="white" />
+                  <Text className="font-noto text-sm font-bold text-white ml-2 flex-1">
+                    👇 以下の文章をコピーしてクチコミに貼り付けられます
+                  </Text>
+                </View>
 
-            <Text className="font-noto text-xs mt-3 text-center" style={{ color: '#B09080' }}>
-              ※ Googleマップのクチコミページに移動します
-            </Text>
-          </View>
+                {/* テキスト編集エリア */}
+                <View className="bg-white p-4">
+                  <TextArea
+                    value={reviewDraft}
+                    onChangeText={setReviewDraft}
+                    className="bg-white border-gray-200"
+                  />
+                </View>
+
+                {/* コピーボタン */}
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={handleCopyToClipboard}
+                  style={{ backgroundColor: copied ? '#10b981' : '#FDF4EE' }}
+                  className="px-4 py-4 flex-row items-center justify-center border-t border-gray-100"
+                >
+                  <Ionicons
+                    name={copied ? 'checkmark-circle' : 'copy-outline'}
+                    size={20}
+                    color={copied ? 'white' : '#C8622A'}
+                  />
+                  <Text
+                    className="font-noto text-base font-bold ml-2"
+                    style={{ color: copied ? 'white' : '#C8622A' }}
+                  >
+                    {copied ? '✅ コピー完了！' : '📋 投稿文をコピーする'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
+              {/* Googleマップ クチコミボタン */}
+              <View
+                className="items-center mt-2 mb-4"
+                style={{
+                  backgroundColor: 'transparent',
+                  borderWidth: 0,
+                  padding: 0,
+                  marginHorizontal: 0,
+                }}
+              >
+                <TouchableOpacity
+                  activeOpacity={0.85}
+                  onPress={handleOpenGoogleMaps}
+                  className="outline-none border-0"
+                  style={{
+                    width: '100%',
+                    maxWidth: 400,
+                    backgroundColor: 'transparent',
+                    borderWidth: 0,
+                    shadowColor: '#C8622A',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 12,
+                    elevation: 6,
+                    // @ts-ignore
+                    outlineStyle: 'none',
+                    // @ts-ignore
+                    outlineWidth: 0,
+                  }}
+                >
+                  <LinearGradient
+                    colors={['#E8943A', '#C8622A']}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                    style={{
+                      borderRadius: 50,
+                      paddingVertical: 18,
+                      paddingHorizontal: 24,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Ionicons name="map-outline" size={22} color="white" style={{ marginRight: 10 }} />
+                    <Text className="font-noto text-base font-bold text-white tracking-wider">
+                      🗺️ Googleマップを開いてクチコミを書く
+                    </Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                <Text className="font-noto text-xs mt-3 text-center" style={{ color: '#B09080' }}>
+                  ※ Googleマップのクチコミページに移動します
+                </Text>
+              </View>
+            </>
+          )}
 
           {/* 前のページへ戻るリンク */}
           <View className="items-center mt-8 mb-4">
             <TouchableOpacity onPress={() => router.replace('/')}>
               <Text className="font-noto text-sm underline" style={{ color: '#B09080' }}>
-                今回は回答しない（前のページに戻る）
+                最初のページに戻る
               </Text>
             </TouchableOpacity>
           </View>
