@@ -6,10 +6,9 @@ import { Ionicons } from '@expo/vector-icons';
 
 import { Header } from '../components/Header';
 import { HeroBanner } from '../components/HeroBanner';
-import { TextInput } from '../components/TextInput';
+import { RadioGroup } from '../components/RadioGroup';
 import { TextArea } from '../components/TextArea';
-import { Select } from '../components/Select';
-import { NPSSelector } from '../components/NPSSelector';
+import { StarRating } from '../components/StarRating';
 import { SubmitButton } from '../components/SubmitButton';
 import { FormError } from '../components/FormError';
 
@@ -17,21 +16,26 @@ import { useSurveyForm } from '../hooks/useSurveyForm';
 import questionsData from '../questions/surveyQuestions.json';
 import { SurveyFormState } from '../types/survey';
 
+// 「該当なし」の特殊値
+const NA_VALUE = -1;
+
 function RequiredBadge() {
   return (
     <Text className="ml-1 text-sm font-bold text-[#D34141]">※必須</Text>
   );
 }
 
-function LanguageSelector() {
+/** セクションタイトル */
+function SectionTitle({ title }: { title: string }) {
   return (
-    <View className="mb-6 flex-row items-center justify-start">
-      <Ionicons name="globe-outline" size={20} color="#556977" />
-      <Text className="ml-2 font-noto text-sm text-[#556977]">Language</Text>
-      <View className="ml-4 flex-row items-center rounded border border-gray-200 bg-white px-3 py-1.5">
-        <Text className="font-noto text-sm text-gray-700">日本語</Text>
-        <Ionicons name="chevron-down" size={16} color="#94a3b8" style={{ marginLeft: 8 }} />
+    <View className="mb-4 mt-8 w-full">
+      <View className="flex-row items-center mb-2">
+        <View className="h-5 w-1 rounded-full mr-2" style={{ backgroundColor: '#C8622A' }} />
+        <Text className="font-noto text-base font-bold" style={{ color: '#C8622A' }}>
+          {title}
+        </Text>
       </View>
+      <View className="h-[1px] w-full" style={{ backgroundColor: '#F0DECE' }} />
     </View>
   );
 }
@@ -43,61 +47,49 @@ export default function SurveyScreen() {
     const result = await submit();
 
     if (!result.success) {
-      if ('error' in result) {
-        Alert.alert('送信に失敗しました', '通信環境をご確認の上、再度お試しください。');
-      } else {
+      if ('validationError' in result && result.validationError) {
         Alert.alert('入力エラー', '必須項目をご確認ください。');
+      } else {
+        Alert.alert('送信に失敗しました', '通信環境をご確認の上、再度お試しください。');
       }
       return;
     }
 
     router.replace({
       pathname: '/thanks',
-      params: { comments: form.comments }
+      params: { comments: form.comments },
     });
   };
 
   const renderQuestion = (question: any) => {
+    // セクションタイトル
     if (question.type === 'section_title') {
-      return (
-        <View key={question.id} className="mb-6 mt-4">
-          <Text className="font-noto text-base font-bold text-gray-700">
-            {question.title} <Text className="text-[#D34141] font-normal">※必須</Text>
-          </Text>
-        </View>
-      );
+      return <SectionTitle key={question.id} title={question.title} />;
     }
 
     const error = errors[question.id as keyof SurveyFormState];
     const value = form[question.id as keyof SurveyFormState];
 
     return (
-      <View key={question.id} className="mb-10 w-full">
-        <View className="mb-4 flex-row items-center flex-wrap">
-          {question.type === 'nps' ? (
-             <View className="mr-3 h-6 w-6 items-center justify-center rounded bg-primary">
-                <Text className="text-white text-xs font-bold">
-                  {question.title.match(/^\d+/)?.[0] || ''}
-                </Text>
-             </View>
-          ) : null}
-          <Text className="font-noto text-base font-bold text-gray-800">
-            {question.type === 'nps' ? question.title.replace(/^\d+\.\s*/, '') : question.title}
+      <View key={question.id} className="mb-8 w-full">
+        {/* 質問タイトル */}
+        <View className="mb-3 flex-row items-start flex-wrap">
+          <Text className="font-noto text-base font-bold" style={{ color: '#2D1A0E', flex: 1 }}>
+            {question.title}
           </Text>
-          {question.required && question.type !== 'nps' && <RequiredBadge />}
+          {question.required && <RequiredBadge />}
         </View>
 
-        {question.type === 'text' && (
-          <TextInput
-            value={value as string}
-            onChangeText={(text) => updateField(question.id as keyof SurveyFormState, text)}
-            placeholder="入力してください"
-            hasError={!!error}
-          />
-        )}
+        {/* サブタイトル（任意項目の補足説明など） */}
+        {question.subtitle ? (
+          <Text className="font-noto text-xs mb-3" style={{ color: '#9A7A63' }}>
+            {question.subtitle}
+          </Text>
+        ) : null}
 
-        {question.type === 'select' && (
-          <Select
+        {/* ラジオボタン */}
+        {question.type === 'radio' && (
+          <RadioGroup
             options={question.options}
             value={value as string}
             onChange={(val) => updateField(question.id as keyof SurveyFormState, val)}
@@ -105,18 +97,36 @@ export default function SurveyScreen() {
           />
         )}
 
-        {question.type === 'nps' && (
-          <NPSSelector
+        {/* 5段階スター評価（必須） */}
+        {question.type === 'star' && (
+          <StarRating
             value={value ? Number(value) : null}
-            onChange={(val) => updateField(question.id as keyof SurveyFormState, String(val))}
+            onChange={(val) =>
+              updateField(question.id as keyof SurveyFormState, val !== null ? String(val) : '')
+            }
+            hasError={!!error}
+            allowNA={false}
           />
         )}
 
+        {/* 5段階スター評価（「該当なし」あり・任意） */}
+        {question.type === 'star_optional' && (
+          <StarRating
+            value={value ? Number(value) : null}
+            onChange={(val) =>
+              updateField(question.id as keyof SurveyFormState, val !== null ? String(val) : '')
+            }
+            hasError={!!error}
+            allowNA={true}
+          />
+        )}
+
+        {/* テキストエリア */}
         {question.type === 'textarea' && (
           <TextArea
             value={value as string}
             onChangeText={(text) => updateField(question.id as keyof SurveyFormState, text)}
-            placeholder="ご自由にご記入ください"
+            placeholder="注文したお弁当名や、お気づきの点（お褒めの言葉・改善点）をご自由にお書きください"
             hasError={!!error}
           />
         )}
@@ -127,7 +137,7 @@ export default function SurveyScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F8F9FA]">
+    <SafeAreaView className="flex-1" style={{ backgroundColor: '#FFFAF6' }}>
       <StatusBar style="dark" backgroundColor="#ffffff" />
       <Header />
       <ScrollView
@@ -138,24 +148,29 @@ export default function SurveyScreen() {
         <HeroBanner />
 
         <View className="w-full max-w-[760px] px-6">
-          <LanguageSelector />
-          
-          <View className="mb-8 border-b border-gray-100 pb-4">
-             <Text className="text-sm text-gray-500 font-noto leading-relaxed">
-               ※ 本アンケートは匿名でご回答いただけます。個人が特定されることはありません。
-             </Text>
+          {/* 案内文 */}
+          <View
+            className="mb-8 rounded-xl p-4 flex-row items-start"
+            style={{ backgroundColor: '#FDF4EE', borderLeftWidth: 3, borderLeftColor: '#C8622A' }}
+          >
+            <Ionicons name="information-circle-outline" size={18} color="#C8622A" style={{ marginTop: 2, marginRight: 8 }} />
+            <Text className="font-noto text-sm leading-relaxed flex-1" style={{ color: '#7A5C45' }}>
+              本アンケートは匿名でご回答いただけます。いただいたご意見はサービス向上に活用させていただきます。
+            </Text>
           </View>
 
+          {/* 設問 */}
           <View className="w-full">
             {questionsData.map(renderQuestion)}
           </View>
 
+          {/* 送信ボタン */}
           <View className="mt-10 items-center">
             <SubmitButton
               title="アンケートを送信する"
               onPress={onSubmit}
               disabled={submitting}
-              className="w-full max-w-sm rounded-full py-4 bg-primary"
+              className="w-full max-w-sm rounded-full py-4"
             />
           </View>
         </View>

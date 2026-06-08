@@ -7,16 +7,17 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          DEFAULT: '#5E969E', // 落ち着いたティールカラー
-          light: '#F2F7F7',
-          dark: '#4A7A81',
+          DEFAULT: '#C8622A', // 深みのある暖色（仕出し弁当の高級感）
+          light: '#FDF4EE',   // 薄い暖色背景
+          dark: '#A34E20',    // ダーク版
         },
         surface: '#FFFFFF',
-        background: '#F8F9FA',
-        accent: '#D1E5E7',
+        background: '#FFFAF6',  // 温かみのあるオフホワイト
+        accent: '#E8943A',      // アクセントオレンジ
+        gold: '#D4A84B',        // 高級感を演出するゴールド
         text: {
-          DEFAULT: '#334155',
-          muted: '#64748B',
+          DEFAULT: '#2D1A0E',   // 深みのあるブラウン
+          muted: '#7A5C45',     // ミュートブラウン
         },
         error: '#EF4444',
       },

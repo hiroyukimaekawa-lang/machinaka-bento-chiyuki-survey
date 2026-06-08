@@ -1,95 +1,101 @@
 [
   {
-    "id": "patientName",
-    "type": "text",
-    "title": "①患者様のお名前",
-    "required": true
-  },
-  {
-    "id": "examType",
-    "type": "select",
-    "title": "②施術に関して",
+    "id": "usageScene",
+    "type": "radio",
+    "title": "①ご利用シーン",
     "options": [
-      "胃カメラ",
-      "大腸カメラ",
-      "両方"
+      "接待・会議・ビジネス",
+      "法事・法要",
+      "慶事・お祝い",
+      "行楽・地域のイベント",
+      "その他"
     ],
     "required": true
   },
   {
-    "id": "previousExam",
-    "type": "select",
-    "title": "③以前当院で検査を受けたことはありますか？",
+    "id": "orderMethod",
+    "type": "radio",
+    "title": "②ご注文方法",
     "options": [
-      "はい",
-      "いいえ"
+      "WEBサイトから",
+      "お電話で"
     ],
     "required": true
   },
   {
-    "id": "evaluationTitle",
+    "id": "deliverySectionTitle",
     "type": "section_title",
-    "title": "④下記は10段階評価でお願いします"
+    "title": "デリバリー（配達）品質の評価"
   },
   {
-    "id": "examPain",
-    "type": "nps",
-    "title": "1. 検査の苦痛があったかどうか",
+    "id": "deliveryTime",
+    "type": "star",
+    "title": "③お届け時間（指定通りに届いたか）",
     "required": true
   },
   {
-    "id": "doctorExplanation",
-    "type": "nps",
-    "title": "2. 医師の診察・検査後の説明が十分だったか",
+    "id": "deliveryStaff",
+    "type": "star",
+    "title": "④配達員の接客態度・身だしなみ",
     "required": true
   },
   {
-    "id": "waitingTime",
-    "type": "nps",
-    "title": "3. 待ち時間が適切だったか",
+    "id": "deliveryCondition",
+    "type": "star",
+    "title": "⑤お弁当のお届け状態（中身の崩れや偏りがなかったか）",
     "required": true
   },
   {
-    "id": "nurseResponse",
-    "type": "nps",
-    "title": "4. 看護師の対応",
+    "id": "bentoSectionTitle",
+    "type": "section_title",
+    "title": "お弁当（商品）品質の評価"
+  },
+  {
+    "id": "bentoAppearance",
+    "type": "star",
+    "title": "⑥お弁当の見栄え・高級感",
     "required": true
   },
   {
-    "id": "receptionResponse",
-    "type": "nps",
-    "title": "5. 受付の対応",
+    "id": "bentoTaste",
+    "type": "star",
+    "title": "⑦お弁当の味・クオリティ",
     "required": true
   },
   {
-    "id": "nextTime",
-    "type": "nps",
-    "title": "6. 次回も当院で受けたいと思うか",
+    "id": "bentoRice",
+    "type": "star",
+    "title": "⑧ご飯の種類（炊き込みご飯・赤飯・釜飯など）の満足度",
     "required": true
   },
   {
-    "id": "recommend",
-    "type": "nps",
-    "title": "7. 家族や友人に勧めたいと思うか",
+    "id": "bentoVolume",
+    "type": "star",
+    "title": "⑨お弁当のボリューム（量）",
     "required": true
   },
   {
-    "id": "reason",
-    "type": "select",
-    "title": "⑤当院を選ばれた理由は？",
-    "options": [
-      "HP",
-      "知人紹介",
-      "通りすがり",
-      "看板",
-      "医療機関からの紹介"
-    ],
+    "id": "bentoWarmth",
+    "type": "star_optional",
+    "title": "⑩茶碗蒸しや鉄板セットなどの温かさ・保温状態",
+    "subtitle": "※ご注文いただいていない場合は「該当なし」を選択してください",
+    "required": false
+  },
+  {
+    "id": "overallSectionTitle",
+    "type": "section_title",
+    "title": "総評・ご意見"
+  },
+  {
+    "id": "recommendation",
+    "type": "star",
+    "title": "⑪今後の利用意向・推奨度",
     "required": true
   },
   {
     "id": "comments",
     "type": "textarea",
-    "title": "⑥気づいた点・ご意見がありましたらご自由にご記入ください",
+    "title": "⑫ご意見・ご感想（自由記述）",
     "required": false
   }
 ]

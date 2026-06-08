@@ -1,31 +1,39 @@
 export interface SurveyAnswer {
-  patientName: string;
-  examType: string;
-  previousExam: string;
-  examPain: string;
-  doctorExplanation: string;
-  waitingTime: string;
-  nurseResponse: string;
-  receptionResponse: string;
-  nextTime: string;
-  recommend: string;
-  reason: string;
+  // ご利用状況
+  usageScene: string;
+  orderMethod: string;
+  // デリバリー品質
+  deliveryTime: string;
+  deliveryStaff: string;
+  deliveryCondition: string;
+  // お弁当品質
+  bentoAppearance: string;
+  bentoTaste: string;
+  bentoRice: string;
+  bentoVolume: string;
+  bentoWarmth: string;
+  // 総評
+  recommendation: string;
   comments: string;
   submittedAt: string;
 }
 
 export interface SurveyFormState {
-  patientName: string;
-  examType: string;
-  previousExam: string;
-  examPain: string;
-  doctorExplanation: string;
-  waitingTime: string;
-  nurseResponse: string;
-  receptionResponse: string;
-  nextTime: string;
-  recommend: string;
-  reason: string;
+  // ご利用状況
+  usageScene: string;
+  orderMethod: string;
+  // デリバリー品質
+  deliveryTime: string;
+  deliveryStaff: string;
+  deliveryCondition: string;
+  // お弁当品質
+  bentoAppearance: string;
+  bentoTaste: string;
+  bentoRice: string;
+  bentoVolume: string;
+  bentoWarmth: string; // 任意（該当なし含む）
+  // 総評
+  recommendation: string;
   comments: string;
 }
 

@@ -18,7 +18,7 @@ export function SubmitButton({ title, onPress, disabled, className = '' }: Props
         disabled ? 'bg-gray-300' : 'bg-primary'
       } ${className}`}
       style={!disabled ? {
-        shadowColor: '#5E969E',
+        shadowColor: '#C8622A',
         shadowOpacity: 0.3,
       } : {}}
     >
