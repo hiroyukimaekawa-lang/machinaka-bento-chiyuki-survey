@@ -181,11 +181,6 @@ export default function ThanksScreen() {
                     maxWidth: 400,
                     backgroundColor: 'transparent',
                     borderWidth: 0,
-                    shadowColor: '#C8622A',
-                    shadowOffset: { width: 0, height: 4 },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 12,
-                    elevation: 6,
                     // @ts-ignore
                     outlineStyle: 'none',
                     // @ts-ignore
@@ -203,6 +198,11 @@ export default function ThanksScreen() {
                       flexDirection: 'row',
                       alignItems: 'center',
                       justifyContent: 'center',
+                      shadowColor: '#C8622A',
+                      shadowOffset: { width: 0, height: 4 },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 12,
+                      elevation: 6,
                     }}
                   >
                     <Ionicons name="map-outline" size={22} color="white" style={{ marginRight: 10 }} />
