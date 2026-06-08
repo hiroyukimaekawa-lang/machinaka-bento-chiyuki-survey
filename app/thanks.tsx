@@ -165,6 +165,7 @@ export default function ThanksScreen() {
             <TouchableOpacity
               activeOpacity={0.85}
               onPress={handleOpenGoogleMaps}
+              className="outline-none border-0"
               style={{
                 width: '100%',
                 maxWidth: 400,
@@ -173,6 +174,8 @@ export default function ThanksScreen() {
                 shadowOpacity: 0.3,
                 shadowRadius: 12,
                 elevation: 6,
+                // @ts-ignore (React Native Web only property)
+                outlineStyle: 'none',
               }}
             >
               <LinearGradient
