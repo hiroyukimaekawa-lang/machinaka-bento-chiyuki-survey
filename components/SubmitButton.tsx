@@ -14,7 +14,7 @@ export function SubmitButton({ title, onPress, disabled, className = '' }: Props
       activeOpacity={0.8}
       onPress={onPress}
       disabled={disabled}
-      className={`h-16 flex-row items-center justify-center rounded-full px-12 shadow-lg ${
+      className={`h-16 flex-row items-center justify-center rounded-full px-12 shadow-lg border-0 outline-none ${
         disabled ? 'bg-gray-300' : 'bg-primary'
       } ${className}`}
       style={!disabled ? {

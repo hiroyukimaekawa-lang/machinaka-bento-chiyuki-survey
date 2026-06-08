@@ -14,14 +14,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { Header } from '../components/Header';
+import { TextArea } from '../components/TextArea';
 import { hospitalConfig } from '../constants/hospitalConfig';
 
 export default function ThanksScreen() {
   const params = useLocalSearchParams();
   const rawComments = typeof params.comments === 'string' ? params.comments.trim() : '';
 
-  // 設問12のコメントが空なら定型文を使用
-  const defaultText = hospitalConfig.defaultReviewText;
+  // 設問のコメントが空なら、プレースホルダーと同じ定型文を使用
+  const defaultText = "注文したお弁当名や、お気づきの点（お褒めの言葉・改善点）をご自由にお書きください";
   const [reviewDraft, setReviewDraft] = useState(
     rawComments.length > 0 ? rawComments : defaultText
   );
@@ -86,9 +87,7 @@ export default function ThanksScreen() {
             style={{ backgroundColor: '#FDF4EE', borderLeftWidth: 3, borderLeftColor: '#C8622A' }}
           >
             <Text className="font-noto text-sm leading-relaxed text-center" style={{ color: '#7A5C45' }}>
-              いただいたご意見は、より美味しいお弁当と{'\n'}
-              より良い配達サービスの向上に活かしてまいります。{'\n'}
-              引き続き「街中弁当 千行」をよろしくお願いいたします。
+              いただいたご意見は、より美味しいお弁当とより良い配達サービスの向上に活かしてまいります。引き続き「街中弁当 千行」をよろしくお願いいたします。
             </Text>
           </View>
 
@@ -105,8 +104,7 @@ export default function ThanksScreen() {
               Googleクチコミにご協力ください 🙏
             </Text>
             <Text className="font-noto text-sm leading-relaxed mb-6 text-center" style={{ color: '#7A5C45' }}>
-              お客様の声が、他のお客様の参考になります。{'\n'}
-              よろしければ、Googleクチコミへの投稿をお願いいたします。
+              お客様の声が、他のお客様の参考になります。よろしければ、Googleクチコミへの投稿をお願いいたします。
             </Text>
           </View>
 
@@ -132,14 +130,13 @@ export default function ThanksScreen() {
               </Text>
             </View>
 
-            {/* テキストプレビュー */}
+            {/* テキスト編集エリア */}
             <View className="bg-white p-4">
-              <Text
-                className="font-noto text-sm leading-relaxed"
-                style={{ color: '#2D1A0E', minHeight: 80 }}
-              >
-                {reviewDraft}
-              </Text>
+              <TextArea
+                value={reviewDraft}
+                onChangeText={setReviewDraft}
+                className="bg-white border-gray-200"
+              />
             </View>
 
             {/* コピーボタン */}
@@ -147,7 +144,7 @@ export default function ThanksScreen() {
               activeOpacity={0.8}
               onPress={handleCopyToClipboard}
               style={{ backgroundColor: copied ? '#10b981' : '#FDF4EE' }}
-              className="px-4 py-4 flex-row items-center justify-center border-t"
+              className="px-4 py-4 flex-row items-center justify-center border-t border-gray-100"
             >
               <Ionicons
                 name={copied ? 'checkmark-circle' : 'copy-outline'}
