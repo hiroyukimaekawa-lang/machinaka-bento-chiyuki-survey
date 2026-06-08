@@ -161,7 +161,15 @@ export default function ThanksScreen() {
           </View>
 
           {/* Googleマップ クチコミボタン */}
-          <View className="items-center mt-2 mb-4">
+          <View
+            className="items-center mt-2 mb-4"
+            style={{
+              backgroundColor: 'transparent',
+              borderWidth: 0,
+              padding: 0,
+              marginHorizontal: 0,
+            }}
+          >
             <TouchableOpacity
               activeOpacity={0.85}
               onPress={handleOpenGoogleMaps}
@@ -169,13 +177,17 @@ export default function ThanksScreen() {
               style={{
                 width: '100%',
                 maxWidth: 400,
+                backgroundColor: 'transparent',
+                borderWidth: 0,
                 shadowColor: '#C8622A',
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.3,
                 shadowRadius: 12,
                 elevation: 6,
-                // @ts-ignore (React Native Web only property)
+                // @ts-ignore
                 outlineStyle: 'none',
+                // @ts-ignore
+                outlineWidth: 0,
               }}
             >
               <LinearGradient
